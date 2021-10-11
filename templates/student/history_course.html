@@ -1,0 +1,27 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block history_course %}
+    <div class="history_title text-center text-dark">
+        <h3>Các bài giảng đã học</h3>
+    </div>
+    <table class="table mt-4 text-center" id="history">
+        <thead class="table-primary">
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Bài Giảng</th>
+                <th scope="col">Giảng Viên</th>
+                <th scope="col">Thời Gian</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hc in history_courses %}
+            <tr id="his-course">
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'course_detail' hc.course.id %}">{{ hc.course.name }}</a></td>
+                <td>{{ hc.course.teacher.name }}</td>
+                <td>{{ hc.created_at }}</td>
+            </tr>
+            {% endfor %}                
+        </tbody>
+    </table>
+{% endblock %}

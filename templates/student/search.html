@@ -1,0 +1,138 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block search %}
+<div id="spinner-box" class="text-center mt-5">
+    <div class="spinner-border text-primary" style="width: 5rem; height: 5rem; margin-top: 100px;" role="status"></div>
+</div>
+
+<div id="search-box">
+    <div class="course-container text-left mt-4">
+        <h5 class="text-dark">Danh sách môn học</h5>
+        <div class="border-top border-primary mb-1 w-25"></div>
+        <div class="row">
+            {% for sub in subjects %}
+            <div class="course col-md-6 col-lg-3 my-2">
+                <div class="course-box">
+                    <div class="course-name text-center">
+                        <p class="text-white my-2">{{ sub.name }}</p>
+                    </div>
+                    <div class="course-button text-center">
+                        <a href="{% url 'course_list' sub.id %}" class="btn btn-outline-primary btn-sm mt-2">Học ngay</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="course-container text-left mt-4">
+        <h5 class="text-dark">Danh sách bài giảng</h5>
+        <div class="border-top border-primary mb-1 w-25"></div>
+        <div class="row">
+            {% for c in courses %}
+            <div class="course col-md-6 col-lg-3 my-2">
+                <div class="course-box">
+                    <div class="course-name text-center">
+                        <p class="text-white my-2">{{ c.name }} ({{ c.teacher.name }})</p>
+                    </div>
+                    <div class="course-button text-center">
+                        {% csrf_token %}
+                        <button
+                            class="btn btn-outline-primary modal-button btn-sm mt-2"
+                            data-pk="{{ c.pk }}"
+                            data-name="{{ c.name }}"
+                            data-description="{{ c.description }}"
+                            data-created="{{ c.created_at|date:'d-m-Y' }}"
+                            data-student="{{ name }}"
+                            data-toggle="modal"
+                            data-target="#CourseStartModal"
+                            >
+                            Học ngay
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="CourseStartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Bắt đầu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body-confirm">
+    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Không</button>
+                    <button type="button" id="start-button" class="btn btn-success">Có</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'student/js/intro-course.js' %}"></script>
+    
+    <div class="quiz-container text-left mt-4">
+        <h5 class="text-dark">Danh sách bài quiz</h5>
+        <div class="border-top border-primary mb-1 w-25"></div>
+        <div class="row">
+            {% for quiz in quizzes %}
+            <div class="col-md-6 col-lg-3 my-2" id="quiz-container">
+                <!-- href="{% url 'core:quiz_detail' quiz.id %}" -->
+                <button
+                    class="btn btn-link modal-quiz-button row mt-2"
+                    id="quiz"
+                    data-pk="{{ quiz.pk }}"
+                    data-name="{{ quiz.name }}"
+                    data-questions="{{ quiz.number_of_question}}"
+                    data-difficulity="{{ quiz.difficulity }}"
+                    data-time="{{ quiz.time }}"
+                    data-pass="{{ quiz.required_score_to_pass }}"
+                    data-result="{{ quiz.show_result }}"
+                    data-toggle="modal"
+                    data-target="#quizStartModal"
+                >
+                    <div class="quiz-name col-9">{{ quiz.name }} - {{ quiz.teacher_id }}</div>
+                    <div class="quiz-icon-play col-3"><i class='bx bx-play-circle bx-tada' ></i></div>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="quizStartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bắt đầu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body-quiz">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Không</button>
+                <button type="button" id="start-button" class="btn btn-success">Có</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'student/js/intro-quiz.js' %}"></script>
+<script>
+    const searchBox = document.getElementById('search-box')
+    const spinnerBox = document.getElementById('spinner-box');
+    searchBox.classList.add('not-visible');
+    setTimeout(() => {
+        spinnerBox.classList.add("not-visible");
+        searchBox.classList.remove('not-visible')
+    }, 500);
+</script>
+{% endblock %}

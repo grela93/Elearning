@@ -1,0 +1,52 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block quizzes %}
+    <h2 class="text-center text-dark">Môn {{ subject.name }}</h2>
+    <div class="quizzes text-left mt-4">
+        <h5 class="text-dark">Danh sách bài quiz</h5>
+        <div class="border-top border-primary mb-1 w-25"></div>
+        <div class="row">
+            {% for quiz in quizzes %}
+            <div class="col-md-6 col-lg-4 my-2">
+                <button                        
+                    class="btn btn-link modal-quiz-button row mt-2" 
+                    id="quiz-button"
+                    data-pk="{{ quiz.pk }}"
+                    data-name="{{ quiz.name }}"
+                    data-questions="{{ quiz.number_of_question}}"
+                    data-difficulity="{{ quiz.difficulity }}"
+                    data-time="{{ quiz.time }}"
+                    data-pass="{{ quiz.required_score_to_pass }}"
+                    data-result="{{ quiz.show_result }}"
+                    data-toggle="modal"
+                    data-target="#quizStartModal"
+                >
+                    <div class="quiz-name col-9">{{ quiz.name }} - {{ quiz.teacher.name }}</div>
+                    <div class="quiz-icon-play col-3"><i class='bx bx-play-circle bx-tada' ></i></div>
+                </button>                       
+            </div>    
+            {% endfor %}                
+        </div>                
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="quizStartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Bắt đầu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body-quiz">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Không</button>
+                    <button type="button" id="start-button" class="btn btn-success">Có</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'student/js/intro-quiz.js' %}"></script>
+{% endblock %}

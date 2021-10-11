@@ -1,0 +1,133 @@
+{% extends 'student/base.html' %} 
+{% load static %} 
+{% block main %}
+    <!-- Carousel Image -->
+    <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="650000">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="bg w-100" src="{% static 'student/img/bg_img3.jpg' %}" alt="">
+                <div class="carousel-caption">
+                    <div class="container">
+                        <div class="row justify-content-end text-right">
+                            <div class="col-7 d-none d-md-block py-3 px-0 pl-3">
+                                <h3>Chào mừng trở lại, {{ username }}</h3>
+                                <p class="lead mt-2">Hãy cố gắng hoàn tất các mục tiêu của bản thân nhé!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Carousel Image -->
+
+    <!-- Your Courses -->
+    <div class="course-container mt-4">
+        <h5 class="text-dark">Bài giảng của bạn</h5>
+        <div class="border-top border-primary mb-1 w-25"></div>
+        <div class="row">
+            {% for hc in history_courses %}
+            <div class="course col-md-6 col-lg-3">
+                <div class="course-box">
+                    <div class="course-name text-center">
+                        <p class="text-white my-2">{{ hc.course.name }} <br> {{ hc.course.teacher.name }}</p>
+                    </div>
+                    <div class="course-button text-center">
+                        {% csrf_token %}
+                        <button
+                            class="btn btn-outline-primary modal-button btn-sm mt-2"
+                            data-pk="{{ hc.course.pk }}"
+                            data-name="{{ hc.course.name }}"
+                            data-description="{{ hc.course.description }}"
+                            data-created="{{ hc.course.created_at|date:'d-m-Y' }}"
+                            data-student="{{ name }}"
+                            data-toggle="modal"
+                            data-target="#CourseStartModal"
+                        >
+                            Học ngay
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- End Your Courses -->
+
+    <!-- New Subjects -->
+    <div class="course-container mt-4">
+        <h5 class="text-dark">Các môn học mới</h5>
+        <div class="border-top border-primary mb-1 w-25"></div>
+        <div class="row">
+            {% for ns in new_subs %}
+            <div class="course col-md-6 col-lg-3 my-2">
+                <div class="course-box">
+                    <div class="course-name text-center">
+                        <p class="text-white my-2">{{ ns.name }}</p>
+                    </div>
+                    <div class="course-button text-center">
+                        <a href="{% url 'course_list' ns.id %}" class="btn btn-outline-primary btn-sm mt-2">Học ngay</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- End New Subjects -->
+
+    <!-- New Courses -->
+    <div class="course-container mt-4">
+        <h5 class="text-dark">Các bài giảng mới</h5>
+        <div class="border-top border-primary mb-1 w-25"></div>
+        <div class="row">
+            {% for nc in new_courses %}
+            <div class="course col-md-6 col-lg-3 my-2">
+                <div class="course-box">
+                    <div class="course-name text-center">
+                        <p class="text-white my-2">{{ nc.name }} <br> {{ nc.teacher.name }}</p>
+                    </div>
+                    <div class="course-button text-center">
+                        {% csrf_token %}
+                        <button
+                            class="btn btn-outline-primary modal-button btn-sm mt-2"
+                            data-pk="{{ nc.pk }}"
+                            data-name="{{ nc.name }}"
+                            data-description="{{ nc.description }}"
+                            data-created="{{ nc.created_at|date:'d-m-Y' }}"
+                            data-student="{{ name }}"
+                            data-toggle="modal"
+                            data-target="#CourseStartModal"
+                            >
+                            Học ngay
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- Modal -->
+              
+    </div>
+    <!-- End New Courses -->
+    <div class="modal fade" id="CourseStartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Bắt đầu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body-confirm">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Không</button>
+                    <button type="button" id="start-button" class="btn btn-success">Có</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="{% static 'student/js/intro-course.js' %}"></script>      
+{% endblock %}

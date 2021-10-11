@@ -1,0 +1,39 @@
+{% extends 'teacher/base.html' %}
+{% load static %}
+{% block manage_score %}
+    <div id="score-quiz-list">
+        <div class="title text-center mb-3"><h2>Thống kê điểm</h2></div>
+        <div class="subject-container row">
+            {% for sub in subjects %}
+            <div class="col-6 d-flex justify-content-center">
+                <button
+                    class="btn btn-primary modal-button btn-lg"
+                    data-pk="{{ sub.id }}"
+                    data-name="{{ sub.name }}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#quizBox"
+                >
+                    {{ sub.name }}
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="modal fade" id="quizBox" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="scoreTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" id="modal-body-confirm">
+                    
+                </div>
+                <div class="modal-footer">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'teacher/js/manage-score.js' %}"></script>
+{% endblock %}

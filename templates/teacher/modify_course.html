@@ -1,0 +1,73 @@
+{% extends 'teacher/base.html' %}
+{% load static %}
+{% block modify_course %}
+
+<form action="{% url 'modify_course' course_id %}" id="modify-form" enctype="multipart/form-data"  method="POST">
+    {% csrf_token %}
+    <div class="form-group text-right mt-2">
+        <button type="submit" class="btn btn-success"><i class='bx bxs-save'></i>&nbsp;&nbsp;Lưu</button>
+        <span class="mr-3 text-success" id="notify-infor"></span>
+    </div>
+    <!-- <div class="form-group row my-3">
+        <label for="{{ form.subject.id_for_label }}" class="col-sm-2 col-form-label"><strong>Môn học</strong></label>
+        <div class="col-sm-10">
+            {{ form.subject }}
+        </div>
+    </div> -->
+    <div class="form-group row my-3">
+        <label for="{{ form.name.id_for_label }}" class="col-sm-2 col-form-label"><strong>Tên bài giảng</strong></label>
+        <div class="col-sm-10">
+            {{ form.name }}
+        </div>
+    </div>
+    <div class="form-group row my-3">
+        <label for="{{ form.description.id_for_label }}" class="col-sm-2 col-form-label"><strong>Mô tả</strong></label>
+        <div class="col-sm-10">
+            {{ form.description }}
+        </div>
+    </div>
+    <div class="form-group row my-3">
+        <label for="{{ form.body.id_for_label }}" class="col-sm-2 col-form-label"><strong>Nội dung</strong></label>
+        <div class="col-sm-10">
+            {{ form.body }}
+        </div>
+    </div>
+    <div class="form-group row my-3">
+        <label for="{{ form.pdf.id_for_label }}" class="col-sm-2 col-form-label"><strong>PDF</strong></label>
+        <div class="col-sm-10">
+            {{ form.pdf }}
+        </div>
+    </div>
+    <div class="form-group row my-3">
+        <label for="{{ form.video.id_for_label }}" class="col-sm-2 col-form-label"><strong>Video</strong></label>
+        <div class="col-sm-10">
+            {{ form.video }}
+        </div>
+    </div>
+</form>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    const url = window.location.href
+    $(document).ready(() => {
+        $.ajax({
+            type: 'GET',
+            url: `${url}/get-course`,
+            success: function(response) {
+                const name = response['name'];
+                const description = response['description'];
+                const body = response['body'];
+                $('#id_name').attr('value', name);
+                $("#id_description").attr("value", description);
+                $("#id_body").text(body);
+                tinymce.init({
+                    selector: '#id_body'
+                });
+                console.log(response);
+            },
+            error: function(response) {
+                console.log(response);
+            },
+        })
+    })
+</script>
+{% endblock %}

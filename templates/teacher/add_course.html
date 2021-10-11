@@ -1,0 +1,57 @@
+{% extends 'teacher/base.html' %}
+{% load static %}
+{% block add_course %}
+
+<form action="{% url 'add_course' %}" id="add-form" enctype="multipart/form-data"  method="POST" novalidate>
+    {% csrf_token %}
+    <div class="form-group text-right mt-2">
+        <button id="add-button" type="submit" class="btn btn-success"><i class='bx bx-add-to-queue'></i>&nbsp;&nbsp;Tạo bài giảng</button>
+        <span class="mr-3 text-success" id="notify-infor"></span>
+    </div>
+    <div class="form-group row my-3">
+        <label for="{{ form.subject.id_for_label }}" class="col-sm-2 col-form-label"><strong>Môn học</strong></label>
+        <div class="col-sm-10">
+            {{ form.subject }}
+        </div>
+    </div>
+    <div class="form-group row my-3">
+        <label for="{{ form.name.id_for_label }}" class="col-sm-2 col-form-label"><strong>Tên bài giảng</strong></label>
+        <div class="col-sm-10">
+            {{ form.name }}
+        </div>
+    </div>
+    <div class="form-group row my-3">
+        <label for="{{ form.description.id_for_label }}" class="col-sm-2 col-form-label"><strong>Mô tả</strong></label>
+        <div class="col-sm-10">
+            {{ form.description }}
+        </div>
+    </div>
+    <div class="form-group row my-3">
+        <label for="{{ form.body.id_for_label }}" class="col-sm-2 col-form-label"><strong>Nội dung</strong></label>
+        <div class="col-sm-10">
+            {{ form.body }}
+        </div>
+    </div>
+    <div class="form-group row my-3">
+        <label for="{{ form.pdf.id_for_label }}" class="col-sm-2 col-form-label"><strong>PDF</strong></label>
+        <div class="col-sm-10">
+            {{ form.pdf }}
+        </div>
+    </div>
+    <div class="form-group row my-3">
+        <label for="{{ form.video.id_for_label }}" class="col-sm-2 col-form-label"><strong>Video</strong></label>
+        <div class="col-sm-10">
+            {{ form.video }}
+        </div>
+    </div>
+</form>
+<script>
+    const notify = document.getElementById('notify-infor');
+    const addBtn = document.getElementById('add-button');
+
+    tinymce.init({
+        selector: '#id_body'
+    });
+
+</script>
+{% endblock %}

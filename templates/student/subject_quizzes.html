@@ -1,0 +1,18 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block subject_quizzes %}
+    <h2 class="text-center text-dark">QUIZ</h2>
+    <div class="subject-quiz mt-4">
+        <h5 class="text-dark">Danh sách môn học</h5>
+        <div class="border-top border-primary mb-1 w-25"></div>
+        <div class="row">
+            {% for s in subjects %}
+            <div class="subject col-md-4 col-lg-3 my-2">
+                <div class="subject-box text-center">                      
+                    <a href="{% url 'quizzes' s.id %}" class="btn btn-primary btn-sm mt-2">{{ s.name }}</a>
+                </div>
+            </div>    
+            {% endfor %}                
+        </div>                
+    </div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'teacher/base.html' %} {% load static %} {% block view_course %}
+<div id="body-content">
+	<div id="spinner-box-body" class="text-center mt-5">
+		<div
+		class="spinner-border text-primary"
+		style="width: 3rem; height: 3rem"
+		role="status"
+		></div>
+	</div>
+	<h3 class="text-dark ml-5">{{ course.name }}</h3>
+	<h6 class="leader text-dark ml-5">{{ course.teacher.name }}</h6>
+	<small class="ml-5">{{ course.created_at|date:'H:i (d-m-Y)' }}</small>
+	<div class="border-top border-primary my-3 w-100"></div>
+	<div class="course-body">{{ course.body|safe }}</div>
+	{% if course.video %}
+	<div class="video-view text-center mt-5">
+		<h6 class="lead my-3">Video hướng dẫn</h6>
+		<video width="900" height="500" controls>
+		<source src="{{ course.video.url }}" type="video/mp4" />
+		</video>
+	</div>
+	{% endif %} {% if course.pdf %}
+	<div class="pdf-viewer text-center">
+		<h6 class="lead my-3">PDF cho bài học</h6>
+		<style>
+		.pdfobject-container {
+			height: 50rem;
+			border: 1rem solid rgba(0, 0, 0, 0.1);
+		}
+		</style>
+		<div id="pdf"></div>
+		<script src="{% static 'student/js/pdfobject.js' %}"></script>
+		<script>
+		PDFObject.embed("{{ course.pdf.url }}", "#pdf");
+		</script>
+	</div>
+	{% endif %} {% if course.powerpoint %}
+	<div class="pp-viewer text-center">
+		<h6 class="lead text-dark my-3">Powerpoint cho bài học</h6>
+		<style>
+		.pdfobject-container {
+			height: 50rem;
+			border: 1rem solid rgba(0, 0, 0, 0.1);
+		}
+		</style>
+		<div id="powerpoint"></div>
+		<script src="{% static 'student/js/pdfobject.js' %}"></script>
+		<script>
+		PDFObject.embed("{{ course.powerpoint.url }}", "#powerpoint");
+		</script>
+	</div>
+	{% endif %}
+	<hr class="mt-5" />
+	<div class="comment mt-4">
+		<h4 class="cmt-title text-dark mb-3 fw-bold">Bình luận</h4>
+		<div class="cmt-form">
+		<form id="post-cmt" class="row g-3">
+			{% csrf_token %}
+			<div class="col-10">
+			<input
+				type="text"
+				class="form-control ml-sm-3 mb-2"
+				name="body"
+				id="body"
+				placeholder="Mời nhập bình lụân.."
+			/>
+			</div>
+			<div class="col-2 text-center">
+			<button
+				type="submit"
+				class="btn btn-secondary mx-sm-3"
+				style="width: 150px"
+			>
+				Bình luận
+			</button>
+			</div>
+		</form>
+		</div>
+		<div id="spinner-box" class="text-center mt-3">
+		<div class="spinner-border text-primary" role="status"></div>
+		</div>
+		<hr />
+		<div class="cmt-replacement">
+		<div class="cmt-box"></div>
+		</div>
+	</div>
+</div>
+<script src="{% static 'teacher/js/view_course.js' %}"></script>
+{% endblock %}

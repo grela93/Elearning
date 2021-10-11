@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E Learning</title>
+    <link rel="shortcut icon" href="{% static 'student/img/hvktmm.png' %}">
+    
+    <!-- Bootstrap 4.5 CSS -->
+    <link rel="stylesheet" href="{% static 'student/css/bootstrap.min.css' %}">
+    <!--========== BOX ICONS ==========-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="{% static 'student/css/student.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'student/css/style.css' %}"> -->
+
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+</head>
+<body>
+    
+    <!--========== HEADER ==========-->
+    <header class="header">
+        <div class="header__container">
+            <img src="{% static 'student/img/hvktmm.png' %}" alt="" class="header__img">
+    
+            <a href="{% url 'student_home' %}" class="header__logo"><strong>E-Learning</strong> - Học viện Kỹ thuật Mật mã</a>
+    
+            <form method="POST" action="{% url 'search' %}" class="header__search">
+                {% csrf_token %}
+                <input type="search" placeholder="Tìm khóa học" name="searchCourse" id="searchCourse" class="header__input">
+                <i class='bx bx-search header__icon'></i>
+            </form>
+    
+            <div class="header__toggle">
+                <i class='bx bx-menu' id="header-toggle"></i>
+            </div>
+        </div>
+    </header>
+
+    <!--========== NAV ==========-->
+    <div class="nav-custom" id="navbar">
+        <nav class="nav__container">
+            <div>
+                <i class='bx bxs-disc nav__icon' ></i>
+
+                <a class="nav__user" href="#">                   
+                    <img class="nav__avatar" src="{{ avatar }}" alt="avatar">
+                    <h6 class="nav__username mt-2">{{ name }}</h6>
+                </a>
+                <!-- <div class="border-top border-primary w-50 mx-auto mb-3"></div> -->
+
+                <div class="nav__list">
+                    <div class="nav__items">
+                        <!-- <h3 class="nav__subtitle">Profile</h3> -->
+
+                        <a href="{% url 'student_home' %}" class="nav__link active">
+                            <i class='bx bx-home nav__icon' ></i>
+                            <span class="nav__name">Trang chủ</span>
+                        </a>
+                        
+                        <div class="nav__dropdown">
+                            <a href="#" class="nav__link">
+                                <i class='bx bxs-book nav__icon'></i>
+                                <span class="nav__name">Ngành học</span>
+                                <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    {% for m in majors %}
+                                    <a href="{% url 'subject_list' m.id %}" class="nav__dropdown-item">{{ m.name }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'subject_quizzes' %}" class="nav__link">
+                            <i class='bx bx-laptop nav__icon'></i>
+                            <span class="nav__name">Kiểm tra</span>
+                        </a>
+                        
+                        <div class="nav__dropdown">
+                            <a href="#" class="nav__link">
+                                <i class='bx bx-history nav__icon' ></i>
+                                <span class="nav__name">Lịch sử</span>
+                                <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="{% url 'history_courses' %}" class="nav__dropdown-item">Lịch sử khóa học</a>
+                                    <a href="{% url 'history_quizzes' %}" class="nav__dropdown-item">Lịch sử kiểm tra</a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'view_profile' %}" class="nav__link">
+                            <i class='bx bx-user nav__icon' ></i>
+                            <span class="nav__name">Thông tin cá nhân</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="{% url 'logout' %}" class="nav__link nav__logout">
+                <i class='bx bx-log-out nav__icon' ></i>
+                <span class="nav__name">Log Out</span>
+            </a>
+        </nav>
+    </div>
+
+    <!--========== CONTENTS ==========-->
+     <div id="main-box" class="row mt-4">
+
+        <!-- Main Content Heading -->
+        <div id="main-content">
+            <!-- Body Content -->
+
+            <div id="body-content">
+                {% block main %}
+                {% endblock %}
+
+                {% block search %}
+                {% endblock %}
+
+                {% block subjects %}
+                {% endblock %}
+
+                {% block courses %}
+                {% endblock %}
+
+                {% block course_detail %}
+                {% endblock %}
+
+                {% block subject_quizzes %}
+                {% endblock %}
+
+                {% block quizzes %}
+                {% endblock %}
+
+                {% block quiz_detail %}
+                {% endblock %}
+
+                {% block history_course %}
+                {% endblock %}
+
+                {% block history_quizzes %}
+                {% endblock %}
+
+                {% block profile %}
+                {% endblock %}
+            </div>
+    
+            <!-- End Body Content -->
+            
+            <!-- Modal Popup -->    
+        </div>
+        
+        <!-- Navigation Right -->
+        <div id="nav-right">
+            <!-- Calendar -->
+            <div id="calendars">
+                <script src="{% static 'student/js/calendar.js' %}"></script>
+                <div class="calendar" id="table">
+                    <button class="btn" onclick="resetDate()" title="Dia atual"><i class="fas fa-calendar-day mr-2"></i>Today</button>
+                    <div class="header-calendar">
+                        <!-- Aqui é onde ficará o h1 com o mês e o ano -->
+                        <div class="month" id="month-header">
+                        </div>
+                        <div class="buttons">
+                            <button class="icon" onclick="prevMonth()" title="Prev month"><i class="fas fa-chevron-left"></i></button>
+                            <button class="icon" onclick="nextMonth()" title="Next month"><i class="fas fa-chevron-right "></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="https://kit.fontawesome.com/812e771e48.js" crossorigin="anonymous"></script>
+            <!-- End Calendar -->
+
+        </div>
+
+    </div>
+
+    <!--========== FOOTER ==============-->
+    {% include 'student/footer.html' %}
+
+    <!--========== MAIN JS ==========-->
+    <script src="{% static 'student/js/student.js' %}"></script>
+     <!-- jQuery -->
+     <script src="{% static 'student/js/jquery-3.5.1.min.js' %}"></script>
+     <!-- Bootstrap 4.5 JS -->
+     <script src="{% static 'student/js/bootstrap.min.js' %}"></script>
+     <!-- Popper JS -->
+     <script src="{% static 'student/js/popper.min.js' %}"></script>
+     <!-- Font Awesome -->
+     <script src="{% static 'student/js/all.min.js' %}"></script>
+</body>
+</html>

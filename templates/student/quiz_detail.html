@@ -1,0 +1,59 @@
+{% extends 'student/base.html' %} 
+{% load static %} 
+{% block quiz_detail %}
+
+    <div class="quiz-title row mb-4">
+        <div class="col-9">
+            <a href="{% url 'quizzes' quiz.subject.id %}" class="btn btn-danger mb-3">Quay lại</a>
+            <h4 class="text-dark">{{ quiz.name }} - {{ quiz.subject.name }}</h4>
+            <p class="lead mt-3">{{ quiz.teacher.name }}</p>
+            <p class="score-to-pass lead mt-3">Điểm cần đạt: {{ quiz.required_score_to_pass }}</p>
+        </div>
+        <div class="col-3 text-right" id="timer-box">
+
+        </div>
+    </div>
+
+    <div class="quiz-content">
+        <form id="quiz-form">
+            {% csrf_token %}
+            <div id="quiz-box">
+
+            </div>
+            <!-- Button trigger modal -->
+            <!-- <div class="border-top border-primary my-3 w-100"></div>         -->
+            <button type="submit" class="btn btn-primary ml-4 my-4">Nộp bài</button>
+            <!-- <button type="submit" class="btn btn-primary ml-4" data-toggle="modal" data-target="#exampleModal">
+                Nộp bài
+            </button> -->
+        </form>
+        <div id="spinner-box" class="text-center mt-3">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+        </div>
+        <div id="score-box" class="alert alert-success my-2" role="alert"></div>
+        <div class="my-2" id="result-box"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'student/js/main-quiz.js' %}"></script>
+
+{% endblock %}

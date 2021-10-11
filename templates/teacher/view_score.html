@@ -1,0 +1,33 @@
+{% extends 'teacher/base.html' %}
+{% load static %}
+{% block quiz_score %}
+<div class="table-responsive table-borderless" id="score-list" style="font-size: 18px;border-radius: 6px;text-align: center;font-family: Inter, sans-serif;border: 0.4px none rgb(0,0,0) ;">
+    <div class="title-list text-center"><h3 class="text-uppercase">{{ subject }} - {{ quiz.name }}</h3></div>
+    <table class="table table-hover">
+        <thead>
+            <tr class="header-table table-primary" style="width: 250.8px;">
+                <th class="number-score" style="font-size: 18px;">STT</th>
+                <th class="name-student-score">Tên sinh viên</th>
+                <th class="code-student-score">Mã SV</th>
+                <th class="score">Điểm</th>
+                <th class="result-score">Kết quả</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in scores %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ s.student }}</td>
+                <td>{{ s.student.id }}</td>
+                <td>{{ s.score|floatformat:2 }}</td>
+                {% if s.score > s.quiz.required_score_to_pass %}
+                    <td>Đạt</td>
+                {% else %}
+                    <td>Không Đạt</td>
+                {% endif %}
+            </tr>            
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

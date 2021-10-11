@@ -1,0 +1,46 @@
+{% extends 'teacher/base.html' %}
+{% load static %}
+{% block subject_quiz %}
+    <div class="subject-quiz row">
+        <div class="subject-list col-lg">
+            {% for sub in subjects %}
+            <div class="row">
+                <button
+                    type="submit"
+                    class="col-10 btn btn-primary show-quiz-button btn-lg my-2"
+                    data-pk="{{ sub.id }}"
+                    data-quiz="{{ sub.quizzes.all }}"
+                >
+                {{ sub.name }}
+                </button>
+                <span class="arrow col-2 d-flex justify-content-center align-items-center">
+                    <i id="{{ sub.id }}" class="arrow-icon bx bxs-right-arrow"></i>
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-lg" id="quiz-box">
+            <div id="add-quiz-btn"></div>
+            <div id="quiz-list" class="mx-4"></div>
+        </div>
+    </div>
+    <div class="modal fade" id="delQuizModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">XÓA BÀI QUIZ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-score" id="modal-quiz-confirm">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Không</button>
+                    <button type="button" id="del-button" class="btn btn-danger" data-bs-dismiss="modal">Có</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'teacher/js/manage-quiz.js' %}"></script>
+{% endblock %}

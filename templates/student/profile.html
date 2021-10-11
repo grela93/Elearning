@@ -1,0 +1,212 @@
+{% extends 'student/base.html' %} 
+{% load static %} 
+{% block profile %}
+    <div class="body-content row pr-3">
+        <!-- OPTIONS -->
+        <div class="col-lg-4" id="profile-options">
+            <div class="row">
+                <button
+                    type="submit"
+                    class="col-10 btn btn-secondary btn-lg my-2"
+                    id="infor-btn"
+                >
+                Thông tin sinh viên
+                </button>
+                <span
+                    class="arrow col-2 d-flex justify-content-center align-items-center "
+                    >
+                    <i id="arrow-infor" class="bx bxs-right-arrow"></i>
+                </span>
+            </div>
+            <div class="row">
+                <button
+                    type="submit"
+                    class="col-10 btn btn-secondary btn-lg my-4"
+                    id="modify-btn"
+                >
+                Chỉnh sửa thông tin
+                </button>
+                <span class="arrow col-2 d-flex justify-content-center align-items-center" style="display: none;">
+                    <i id="arrow-modify" class="bx bxs-right-arrow"></i>
+                </span>
+            </div>
+        </div>
+
+        <!-- DISPLAY PROFILE -->
+        <div class="col-lg-8" id="profile-display">
+
+            <!-- STUDENT INFORMATION -->
+            <div id="student-infor">
+                <div class="pro-title">
+                    <h5 class="text-primary">Tài khoản</h5>
+                    <div class="border-top border-primary mb-3 w-100"></div>
+                </div>
+                <div class="media mt-3">
+                    
+                    <div class="media-body ml-3 mt-1">
+                        <table class="table table-borderless" style="width: 280px;">
+                            <tr>
+                                <td><strong>Mã sinh viên </strong></td>
+                                <td>: {{ student.student.username }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mật khẩu</strong></td>
+                                <td>: ********</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="pro-title mt-3">
+                    <h5 class="text-primary">Thông tin</h5>
+                    <div class="border-top border-primary mb-3 w-100"></div>
+                </div>
+                <div class="media mt-3">
+                    <div class="media-body ml-3">
+                        <table class="table table-borderless" style="width: 350px;">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Avatar</strong></td>
+                                    <td>:
+                                        <img
+                                            src="{{ avatar }}"
+                                            class="rounded-circle"
+                                            alt="avatar"
+                                            style="height: 100px; width: 100px;"
+                                        />
+                                    </td>                              
+                                </tr>
+                                <tr>
+                                    <td><strong>Họ Tên</strong></td>
+                                    <td>: {{ name }}</td>                                   
+                                </tr>
+                                <tr>
+                                    <td><strong>Khóa</strong></td>
+                                    <td>: {{ student.school_year }}</td>                                   
+                                </tr>
+                                <tr>
+                                    <td><strong>Giới Tính</strong></td>
+                                    <td>: {{ student.gender }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Số Điện Thoại</strong></td>
+                                    <td>: {{ student.phone }}</td>                                   
+                                </tr>
+                                <tr>
+                                    <td><strong>Email</strong></td>
+                                    <td>: {{ student.email }}</td>                                   
+                                </tr><tr>
+                                    <td><strong>Địa chỉ</strong></td>
+                                    <td>: {{ student.address }}</td>                                   
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STUDENT MODIFY -->
+            <div id="student-modify">
+
+                <!-- ACCOUNT MODIFY -->
+                <form id="account-form">
+                    {% csrf_token %}
+                    <h5 class="text-primary">Cập nhật tài khoản</h5>
+                    <div class="border-top border-primary mb-3 w-100"></div>
+                    <div class="form-group row">
+                        <label for="usernameMod" class="col-sm-3 col-form-label"><strong>Mã sinh viên</strong></label>
+                        <div class="col-sm-9">
+                            <input type="text" readonly class="form-control" id="usernameMod" name="usernameMod" value="{{ student.student.username }}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="passwordMod" class="col-sm-3 col-form-label"><strong>Mật khẩu</strong></label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="passwordMod" name="passwordMod" value="sv123456">
+                        </div>
+                    </div>
+                    <div class="form-group text-right">
+                        <span class="mr-3 text-success" id="notify-account"></span>
+                        <button type="submit" class="btn btn-success mr-3">Lưu</button>
+                    </div>
+                </form>
+
+                <!-- INFORMATION MODIFY -->
+                <form id="infor-form" enctype="multipart/form-data" method="POST" action="{% url 'view_profile' %}">
+                    {% csrf_token %}
+                    <h5 class="text-primary">Cập nhật thông tin</h5>
+                    <div class="border-top border-primary mb-3 w-100"></div>
+                    <div class="form-group row">
+                        <label for="avatarMod" class="col-sm-3 col-form-label"><strong>Ảnh đại diện</strong></label>
+                        <div class="col-sm-9 text-center">
+                            <img id="avatarDemo" class="my-3" src="#" alt="avatar" style="height: 100px; width: 100px;border-radius: 50%;">
+                            <!-- <input type="file" class="form-control-file"  name="avatar" accept="image/*" required id="id_avatar"> -->
+                            <p>{{ form.avatar }}</p>
+                        </div>
+                        <script>
+                            $('document').ready(function () {
+                                $("#id_avatar").change(function () {
+                                    if (this.files && this.files[0]) {
+                                        var reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            $('#avatarDemo').attr('src', e.target.result);
+                                        }
+                                        reader.readAsDataURL(this.files[0]);
+                                    }
+                                });
+                            });
+                        </script>
+                    </div>
+                    <div class="form-group row">
+                        <label for="{{ form.name.id_for_label }}" class="col-sm-3 col-form-label"><strong>Họ Tên</strong></label>
+                        <div class="col-sm-9">
+                            <!-- <input type="text" class="form-control" id="nameMod" name="nameMod" value="{{ name }}"> -->
+                            {{ form.name }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="{{ form.school_year.id_for_label }}" class="col-sm-3 col-form-label"><strong>Khóa</strong></label>
+                        <div class="col-sm-9">
+                            <!-- <input type="text" class="form-control" id="schoolYearMod" name="schoolYearMod" value="{{ student.school_year }}"> -->
+                            {{ form.school_year }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="{{ form.gender.id_for_label }}" class="col-sm-3 col-form-label"><strong>Giới tính</strong></label>
+                        <div class="col-sm-9">
+                            <!-- <input type="text" class="form-control" id="genderMod" name="genderMod" value="{{ student.gender }}"> -->
+                            {{ form.gender }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="{{ form.phone.id_for_label }}" class="col-sm-3 col-form-label"><strong>Số Điện Thoại</strong></label>
+                        <div class="col-sm-9">
+                            <!-- <input type="text" class="form-control" id="phoneMod" name="phoneMod" value="{{ student.phone }}"> -->
+                            {{ form.phone }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="{{ form.email.id_for_label }}" class="col-sm-3 col-form-label"><strong>Email</strong></label>
+                        <div class="col-sm-9">
+                            <!-- <input type="email" class="form-control" id="emailMod" name="emailMod" value="{{ student.email }}"> -->
+                            {{ form.email }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="{{ form.address.id_for_label }}" class="col-sm-3 col-form-label"><strong>Địa chỉ</strong></label>
+                        <div class="col-sm-9">
+                            <!-- <input type="text" class="form-control" id="addressMod" name="addressMod" value="{{ student.address }}"> -->
+                            {{ form.address }}
+                        </div>
+                    </div>
+                    <div class="form-group text-right">
+                        <span class="mr-3 text-success" id="notify-infor"></span>
+                        <button type="submit" class="btn btn-success mr-3">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script src="{% static 'student/js/profile.js' %}"></script>
+{% endblock %}
+

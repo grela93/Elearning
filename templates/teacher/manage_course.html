@@ -1,0 +1,74 @@
+{% extends 'teacher/base.html' %}
+{% load static %}
+{% block manage_course %}
+    <div class="manage-course">
+        <div class="add-course">
+            <div class="d-flex justify-content-center align-item-center"><h3>Danh Sách Bài Giảng</h3></div>
+            <a href="{% url 'add_course' %}" class="btn btn-primary"><i class='bx bx-plus-circle'></i>&nbsp;&nbsp;Thêm bài giảng</a>
+        </div>
+        <div class="list-courses row mt-2">
+            {% for c in courses %}
+            <div class="col-md-6 col-lg-3 my-2">
+                <div class="text-center" id="course">
+                    <p class="lead my-2 course-box" data-id="{{ c.pk }}">{{ c.name }}</p>
+                    <a href="{% url 'modify_course' c.id %}" class="btn btn-outline-success btn-sm mt-2">Sửa</a>
+                    <button
+                        class="btn btn-outline-danger modal-button btn-sm mt-2"
+                        data-pk="{{ c.pk }}"
+                        data-name="{{ c.name }}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#delCourseModal"
+                        >
+                        Xóa
+                    </button>
+                </div>
+            </div>    
+            {% endfor %}
+        </div>
+        <!-- MODAL -->
+        <div class="modal fade" id="delCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">XÓA BÀI GIẢNG</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modal-body-confirm">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Không</button>
+                        <button type="button" id="del-button" class="btn btn-danger">Có</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        console.log("hello");
+
+        const modalBtns = [...document.getElementsByClassName('modal-button')];
+        const modalBody = document.getElementById('modal-body-confirm');
+        const delBtn = document.getElementById('del-button');
+        const courseBoxs = [...document.getElementsByClassName('course-box')];
+
+        modalBtns.forEach(modalBtns=> modalBtns.addEventListener('click', ()=>{
+            // console.log(modalBtns)
+            const pk = modalBtns.getAttribute('data-pk');
+            const name = modalBtns.getAttribute('data-name');
+            
+            modalBody.innerHTML = `
+                <div class="h5 mb-3">Bạn có muốn xóa bài giảng "<b>${name}</b>" không?</div>
+            `;
+
+            delBtn.addEventListener('click', ()=>{
+                window.location.assign(`http://127.0.0.1:8000/teacher/delete-course/${pk}`);
+            });
+        }))
+
+        courseBoxs.forEach(courseBox => courseBox.addEventListener('click', function() {
+            const pk = courseBox.getAttribute('data-id');
+            window.location.assign(`http://127.0.0.1:8000/teacher/view-course/${pk}`);
+        }))
+    </script>
+{% endblock %}
