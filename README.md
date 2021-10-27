@@ -36,7 +36,7 @@ DATABASES = {
 }
 ```
 
-Bước 5: Tạo các bảng trong Database
+## Bước 5: Tạo các bảng trong Database
 ```terminal
 (.venv)$ python manage.py makemigrations
 (.venv)$ python manage.py sqlmigrate course 0005
@@ -45,12 +45,12 @@ Bước 5: Tạo các bảng trong Database
 (.venv)$ python manage.py migrate
 ```
 
-Bước 6: Tạo admin
+## Bước 6: Tạo admin
 ```terminal
 $ python manage.py createsuperuser
 ```
 
-Bước 7: Khởi chạy Website Elearning
+## Bước 7: Khởi chạy Website Elearning
 ```terminal
 $ python manage.py runserver
 Watching for file changes with StatReloader
